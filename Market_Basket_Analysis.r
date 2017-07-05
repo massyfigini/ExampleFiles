@@ -3,7 +3,7 @@
 # OBIETTIVO
 # Identificare prodotti acquistati frequentemente insieme per creare un
 # algoritmo tipo "forse ti potrebbe interessare anche" a partire da 
-# cosa è presente nel carrello
+# cosa Ã¨ presente nel carrello
 
 # groceries.csv contiene tutte le 9835 transazioni di un negozio in un mese
 
@@ -18,10 +18,10 @@ library(arules)
 # prodotti presenti nel file: 0 se non presente nella spesa, 1 se presente
 # La matrice consente in questo caso di occupare meno memoria del dataframe 
 # (solo gli 1 occupano memoria)
-groceries <- read.transactions("C:/Users/figinim/Documents/Studies/Machine Learning with R/blog/groceries.csv", sep = ",")
+groceries <- read.transactions("groceries.csv", sep = ",")
 
-# con summary vedo che gli acquisti più frequenti hanno un solo prodotto,
-# che la media è di 4 prodotti per acquisto, che il più acquistato è il latte intero
+# con summary vedo che gli acquisti piÃ¹ frequenti hanno un solo prodotto,
+# che la media Ã¨ di 4 prodotti per acquisto, che il piÃ¹ acquistato Ã¨ il latte intero
 summary(groceries)
 
 # composizione prime 5 righe
@@ -33,11 +33,11 @@ itemFrequency(groceries[, 1:3])
 # grafico con i prodotti presenti in almeno il 10% degli acquisti
 itemFrequencyPlot(groceries, support = 0.1)
 
-# grafico con la top 20 dei prodotti più acquistati
+# grafico con la top 20 dei prodotti piÃ¹ acquistati
 itemFrequencyPlot(groceries, topN = 20)
 
 # guardo la "sparse matrix" (100 record casuali). Se ordinati per data di acquisto
-# può consentire di vedere qualche affinità tra i prodotti in base alla stagionalità
+# puÃ² consentire di vedere qualche affinitÃ  tra i prodotti in base alla stagionalitÃ 
 image(sample(groceries, 100))
 
 
@@ -53,12 +53,12 @@ image(sample(groceries, 100))
 apriori(groceries)
 
 # imposto i parametri:
-# SUPPORT: considero il prodotto se è acquistato mediamente almeno una volta al giorno,
+# SUPPORT: considero il prodotto se Ã¨ acquistato mediamente almeno una volta al giorno,
 # quindi almeno 30 volte. 30/9835 = 0.003
 # CONFIDENCE: bisogna valutare caso per caso, settarlo troppo alto significa prendere
 # solo le associazioni ovvie, troppo basso prendo anche quelle casuali.
-# Di base si può partire con un valore alto e abbassarlo man mano quando testo l'algoritmo
-# se noto che non dà risultati significativi.
+# Di base si puÃ² partire con un valore alto e abbassarlo man mano quando testo l'algoritmo
+# se noto che non dÃ  risultati significativi.
 # Metto il 25%: significa che per essere inclusa nel risultato, una regola deve essere
 # vera in almeno un caso su quattro.
 # MINLEN: lo imposto uguale a 2 per prendere solo le regole con almeno due prodotti 
@@ -69,14 +69,14 @@ groceryrules
 
 # summary of grocery association rules
 summary(groceryrules)
-# il valore di lift indica la probabilità che un articolo sia acquistato insieme agli altri del gruppo
-# rispetto alla sua probabilità media di acquisto. Quindi un valore di 2 significa che ha il doppio delle 
-# probabilità di essere acquistato.
+# il valore di lift indica la probabilitÃ  che un articolo sia acquistato insieme agli altri del gruppo
+# rispetto alla sua probabilitÃ  media di acquisto. Quindi un valore di 2 significa che ha il doppio delle 
+# probabilitÃ  di essere acquistato.
 
 # prime 5 regole
 inspect(groceryrules[1:5])
 
-# prime 5 dal valore più alto di lift
+# prime 5 dal valore piÃ¹ alto di lift
 inspect(sort(groceryrules, by = "lift")[1:5])
 
 # se vogliamo solo le regole che includono birra in botiglia
@@ -92,7 +92,7 @@ BBB <- subset(groceryrules, items %ain% c("bottled beer", "liquor"))
 inspect(BBB)
 # vedo le regole con bottiglie di birra AND liquori.
 # Posso subsettare anche in base a support, confidence o lift. 
-#· Se voglio le regole vere in almeno 3 casi su 4:
+#Â· Se voglio le regole vere in almeno 3 casi su 4:
 TOP <- subset(groceryrules, confidence > 0.75)
 inspect(TOP)
 
