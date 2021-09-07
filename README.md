@@ -1,2 +1,2 @@
-# BlogFiles
-Example files for my blog
+# Example Files
+Example files for studies.
